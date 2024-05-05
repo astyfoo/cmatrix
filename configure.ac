@@ -1,8 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([cmatrix], [2.0], [abishekvashok@gmail.com])
+AC_INIT([cmatrix],[2.0],[abishekvashok@gmail.com])
 AC_CONFIG_SRCDIR([cmatrix.c])
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE
 
 AC_CANONICAL_HOST
@@ -24,11 +24,18 @@ dnl Replace `main' with a function in -lncurses:
 AC_CHECK_LIB(ncurses, main)
 
 dnl Checks for header files.
-AC_HEADER_STDC
+m4_warn([obsolete],
+[The preprocessor macro 'STDC_HEADERS' is obsolete.
+  Except in unusual embedded environments, you can safely include all
+  C89 headers unconditionally.])dnl
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h termios.h termio.h getopt.h)
 
 dnl Checks for library functions.
-AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(putenv)
 
 dnl Checks for libraries.
@@ -169,4 +176,5 @@ AH_TEMPLATE([HAVE_WRESIZE], [Define this if you have the wresize function in you
 AH_TEMPLATE([HAVE_RESIZETERM], [Define this if you have the resizeterm function in your ncurses-type library])
 AH_TEMPLATE([USE_TIOCSTI], [Define this if you want a character you pressed in the screensaver mode to retain in the terminal])
 
-AC_OUTPUT(Makefile cmatrix.spec)
+AC_CONFIG_FILES([Makefile cmatrix.spec])
+AC_OUTPUT
