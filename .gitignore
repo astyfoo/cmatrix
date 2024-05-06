@@ -8,8 +8,10 @@ config.cache
 config.*
 compile
 configure
+configure~
 configure.lineno
 cmatrix.spec
+debug
 depcomp
 install-sh
 missing

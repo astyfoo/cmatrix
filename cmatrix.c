@@ -1,7 +1,7 @@
 /*
     cmatrix.c
 
-    Copyright (C) 1999-2017 Chris Allegretta
+    Copyright (C) 1999-2017, 2024-Present Chris Allegretta
     Copyright (C) 2017-Present Abishek V Ashok
 
     This file is part of cmatrix.
@@ -72,14 +72,12 @@ typedef struct cmatrix {
 } cmatrix;
 
 /* Global variables */
-int console = 0;
-int xwindow = 0;
 int lock = 0;
 cmatrix **matrix = (cmatrix **) NULL;
 int *length = NULL;  /* Length of cols in each line */
 int *spaces = NULL;  /* Spaces left to fill */
 int *updates = NULL; /* What does this do again? */
-#define CHARS_LEN 44 /* Size of the strings. Change this value if you
+#define CHARS_LEN 43 /* Size of the strings. Change this value if you
                          change the number of characters to print */
 char *chars_array[CHARS_LEN] = {"ﾊ", "ﾐ", "ﾋ", "ｰ", "ｳ", "ｼ",
                                 "ﾅ", "ﾓ", "ﾆ", "ｻ", "ﾜ", "ﾂ",
@@ -137,13 +135,11 @@ void usage(void) {
     printf(" -B: All bold characters (overrides -b)\n");
     printf(" -c: Use Japanese characters as seen in the original matrix. Requires appropriate fonts\n");
     printf(" -f: Force the linux $TERM type to be on\n");
-    printf(" -l: Linux mode (uses matrix console font)\n");
     printf(" -L: Lock mode (can be closed from another terminal)\n");
     printf(" -o: Use old-style scrolling\n");
     printf(" -h: Print usage and exit\n");
     printf(" -n: No bold characters (overrides -b and -B, default)\n");
     printf(" -s: \"Screensaver\" mode, exits on first keystroke\n");
-    printf(" -x: X window mode, use if your xterm is using mtx.pcf\n");
     printf(" -V: Print version information and exit\n");
     printf(" -M [message]: Prints your message in the center of the screen. Overrides -L's default message.\n");
     printf(" -u delay (0 - 10, default 4): Screen update delay\n");
@@ -152,6 +148,8 @@ void usage(void) {
     printf(" -m: lambda mode\n");
     printf(" -k: Characters change while scrolling. (Works without -o opt.)\n");
     printf(" -t [tty]: Set tty to use\n");
+    printf(" Ignored for compatibility with old version: -l, -x");
+
 }
 
 void version(void) {
@@ -306,12 +304,10 @@ int main(int argc, char *argv[]) {
     int oldstyle = 0;
     int random = 0;
     int update = 4;
-    int highnum = 0;
     int mcolor = COLOR_GREEN;
     int rainbow = 0;
     int lambda = 0;
     int randnum = 0;
-    int randmin = 0;
     int pause = 0;
     int classic = 0;
     int changes = 0;
@@ -369,7 +365,7 @@ int main(int argc, char *argv[]) {
             force = 1;
             break;
         case 'l':
-            console = 1;
+            fprintf(stderr, "Ignoring deprecated argument: -l\n");
             break;
         case 'L':
             lock = 1;
@@ -395,7 +391,7 @@ int main(int argc, char *argv[]) {
             update = atoi(optarg);
             break;
         case 'x':
-            xwindow = 1;
+            fprintf(stderr, "Ignoring deprecated argument: -x\n");
             break;
         case 'V':
             version();
@@ -488,23 +484,6 @@ int main(int argc, char *argv[]) {
             init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
         }
     }
-
-    /* Set up values for random number generation */
-    if (classic) {
-        /* Half-width kana characters. In the movie they are y-axis flipped, and
-         * they appear alongside latin characters and numerals, but this is the
-         * closest we can do with a standard unicode set and a single number
-         * range */
-        randmin = 0xff66;
-        highnum = 0xff9d;
-    } else if (console || xwindow) {
-        randmin = 166;
-        highnum = 217;
-    } else {
-        randmin = 33;
-        highnum = 123;
-    }
-    randnum = highnum - randmin;
 
     var_init();
 
@@ -625,6 +604,7 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+
         for (j = 0; j <= COLS - 1; j += 2) {
             if ((count > updates[j] || asynch == 0) && pause == 0) {
 
@@ -633,7 +613,7 @@ int main(int argc, char *argv[]) {
                     for (i = LINES - 1; i >= 1; i--) {
                         matrix[i][j].val = matrix[i - 1][j].val;
                     }
-                    random = (int) rand() % (randnum + 8) + randmin;
+                    random = (int) rand() % LINES/3 + 3;
 
                     if (matrix[1][j].val == 0) {
                         matrix[0][j].val = 1;
@@ -648,17 +628,13 @@ int main(int argc, char *argv[]) {
                                of chars has a white 'head' on it. */
 
                             if (((int) rand() % 3) == 1) {
-                                matrix[0][j].val = 0;
-                            } else {
+                                matrix[0][j].val = -3;
+                            } else
                                 matrix[0][j].val = rand() % CHARS_LEN;
-                            }
                             spaces[j] = (int) rand() % LINES + 1;
                         }
-                    } else if (random > highnum && matrix[1][j].val != 1) {
-                        matrix[0][j].val = ' ';
-                    } else {
-                        matrix[0][j].val = (int) rand() % randnum + randmin;
-                    }
+                    } else
+                        matrix[0][j].val = (int) rand() % CHARS_LEN;
 
                 } else { /* New style scrolling (default) */
                     if (matrix[0][j].val == -1 && matrix[1][j].val == ' '
@@ -667,7 +643,7 @@ int main(int argc, char *argv[]) {
                     } else if (matrix[0][j].val == -1
                         && matrix[1][j].val == ' ') {
                         length[j] = (int) rand() % (LINES - 3) + 3;
-                        matrix[0][j].val = (int) rand() % randnum + randmin;
+                        matrix[0][j].val = (int) rand() % CHARS_LEN;
 
                         spaces[j] = (int) rand() % LINES + 1;
                     }
@@ -694,7 +670,7 @@ int main(int argc, char *argv[]) {
                             matrix[i][j].is_head = false;
                             if (changes) {
                                 if (rand() % 8 == 0)
-                                    matrix[i][j].val = (int) rand() % randnum + randmin;
+                                    matrix[i][j].val = (int) rand() % CHARS_LEN;
                             }
                             i++;
                             y++;
@@ -705,7 +681,7 @@ int main(int argc, char *argv[]) {
                             continue;
                         }
 
-                        matrix[i][j].val = (int) rand() % randnum + randmin;
+                        matrix[i][j].val = (int) rand() % CHARS_LEN - 1;
                         matrix[i][j].is_head = true;
 
                         /* If we're at the top of the column and it's reached its
@@ -734,21 +710,12 @@ int main(int argc, char *argv[]) {
                 move(i - y, j);
 
                 if (matrix[i][j].val == 0 || (matrix[i][j].is_head && !rainbow)) {
-                    if (console || xwindow) {
-                        attron(A_ALTCHARSET);
-                    }
                     attron(COLOR_PAIR(COLOR_WHITE));
                     if (bold) {
                         attron(A_BOLD);
                     }
-                    if (matrix[i][j].val == 0) {
-                        if (console || xwindow) {
-                            addch(183);
-                        } else {
-                            addch('&');
-                        }
-                    } else if (matrix[i][j].val == -1) {
-                        addch(' ');
+                    if (matrix[i][j].val == -1 || matrix[i][j].val == ' ') {
+                        addstr(" ");
                     } else {
                         addstr(chars_array[matrix[i][j].val]);
                     }
@@ -756,9 +723,6 @@ int main(int argc, char *argv[]) {
                     attroff(COLOR_PAIR(COLOR_WHITE));
                     if (bold) {
                         attroff(A_BOLD);
-                    }
-                    if (console || xwindow) {
-                        attroff(A_ALTCHARSET);
                     }
                 } else {
                     if (rainbow) {
@@ -795,34 +759,20 @@ int main(int argc, char *argv[]) {
                             attroff(A_BOLD);
                         }
                     } else {
-                        if (console || xwindow) {
-                            attron(A_ALTCHARSET);
-                        }
                         if (bold == 2 ||
                             (bold == 1 && matrix[i][j].val % 2 == 0)) {
                             attron(A_BOLD);
                         }
-                        if (matrix[i][j].val == -1) {
-                            addch(' ');
+                        if (matrix[i][j].val == -1 || matrix[i][j].val == ' ') {
+                            addstr(" ");
                         } else if (lambda && matrix[i][j].val != ' ') {
                             addstr("λ");
                         } else {
-                            /* addch doesn't seem to work with unicode
-                             * characters and there was no direct equivalent.
-                             * So, construct a c-style string with the character
-                             * and print that.
-                             */
-                            wchar_t char_array[2];
-                            char_array[0] = matrix[i][j].val;
-                            char_array[1] = 0;
-                            addwstr(char_array);
+                              addstr(chars_array[matrix[i][j].val]);
                         }
                         if (bold == 2 ||
                             (bold == 1 && matrix[i][j].val % 2 == 0)) {
                             attroff(A_BOLD);
-                        }
-                        if (console || xwindow) {
-                            attroff(A_ALTCHARSET);
                         }
                     }
                     attroff(COLOR_PAIR(mcolor));
