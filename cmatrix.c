@@ -77,7 +77,7 @@ cmatrix **matrix = (cmatrix **) NULL;
 int *length = NULL;  /* Length of cols in each line */
 int *spaces = NULL;  /* Spaces left to fill */
 int *updates = NULL; /* What does this do again? */
-#define CHARS_LEN 43 /* Size of the strings. Change this value if you
+#define CHARS_LEN 44 /* Size of the strings. Change this value if you
                          change the number of characters to print */
 char *chars_array[CHARS_LEN] = {"ﾊ", "ﾐ", "ﾋ", "ｰ", "ｳ", "ｼ",
                                 "ﾅ", "ﾓ", "ﾆ", "ｻ", "ﾜ", "ﾂ",
@@ -709,7 +709,7 @@ int main(int argc, char *argv[]) {
             for (i = y; i <= z; i++) {
                 move(i - y, j);
 
-                if (matrix[i][j].val == 0 || (matrix[i][j].is_head && !rainbow)) {
+                if (matrix[i][j].val == -3 || (matrix[i][j].is_head && !rainbow)) {
                     attron(COLOR_PAIR(COLOR_WHITE));
                     if (bold) {
                         attron(A_BOLD);
