@@ -602,13 +602,13 @@ int main(int argc, char *argv[]) {
         for (j = 0; j <= COLS - 1; j += 2) {
             if ((count > updates[j] || asynch == 0) && pause == 0) {
 
-            if (matrix[0][j].val == -1 && matrix[1][j].val == ' '
+            if ((matrix[0][j].val == -1 || matrix[1][j].val == ' ')
                 && spaces[j] > 0) {
                 spaces[j]--;
             } else if (matrix[0][j].val == -1
-                && matrix[1][j].val == ' ') {
+                || matrix[1][j].val == ' ') {
                 length[j] = (int) rand() % (LINES - 3) + 3;
-                matrix[0][j].val = (int) rand() % CHARS_LEN;
+                matrix[0][j].val = (int) rand() % CHARS_LEN + 1;
 
                 spaces[j] = (int) rand() % LINES + 1;
             }
@@ -635,7 +635,7 @@ int main(int argc, char *argv[]) {
                     matrix[i][j].is_head = false;
                     if (changes) {
                         if (rand() % 8 == 0)
-                            matrix[i][j].val = (int) rand() % CHARS_LEN;
+                            matrix[i][j].val = (int) rand() % CHARS_LEN + 1;
                     }
                     i++;
                     y++;
@@ -646,7 +646,7 @@ int main(int argc, char *argv[]) {
                     continue;
                 }
 
-                matrix[i][j].val = (int) rand() % CHARS_LEN - 1;
+                matrix[i][j].val = (int) rand() % CHARS_LEN + 1;
                 matrix[i][j].is_head = true;
 
                 /* If we're at the top of the column and it's reached its
@@ -721,7 +721,7 @@ int main(int argc, char *argv[]) {
                             (bold == 1 && matrix[i][j].val % 2 == 0)) {
                             attron(A_BOLD);
                         }
-                        if (matrix[i][j].val == -1 || matrix[i][j].val == ' ') {
+                        if (matrix[i][j].val < 1 || matrix[i][j].val == ' ') {
                             addstr(" ");
                         } else if (lambda && matrix[i][j].val != ' ') {
                             addstr("λ");
