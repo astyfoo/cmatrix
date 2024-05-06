@@ -21,8 +21,6 @@
 
 */
 
-#define NCURSES_WIDECHAR 1
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,15 +45,7 @@
 #include <getopt.h>
 #endif
 
-#ifdef HAVE_NCURSES_H
-#include <ncurses.h>
-#else
-#ifdef _WIN32
-#include <ncurses/curses.h>
-#else
-#include <curses.h>
-#endif
-#endif
+#include <ncursesw/ncurses.h>
 
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
@@ -89,6 +79,15 @@ cmatrix **matrix = (cmatrix **) NULL;
 int *length = NULL;  /* Length of cols in each line */
 int *spaces = NULL;  /* Spaces left to fill */
 int *updates = NULL; /* What does this do again? */
+#define CHARS_LEN 44 /* Size of the strings. Change this value if you
+                         change the number of characters to print */
+char *chars_array[CHARS_LEN] = {"ﾊ", "ﾐ", "ﾋ", "ｰ", "ｳ", "ｼ",
+                                "ﾅ", "ﾓ", "ﾆ", "ｻ", "ﾜ", "ﾂ",
+                                "ｵ", "ﾘ", "ｱ", "ﾎ", "ﾃ", "ﾏ",
+                                "ｹ", "ﾒ", "ｴ", "ｶ", "ｷ", "ﾑ",
+                                "ﾕ", "ﾗ", "ｾ", "ﾈ", "ｽ", "ﾀ",
+                                "ﾇ", "ﾍ", "0", "1", "2", "3", "4", "5",
+                                "6", "7", "8", "9", "Z", };
 #ifndef _WIN32
 volatile sig_atomic_t signal_status = 0; /* Indicates a caught signal */
 #endif
@@ -111,13 +110,6 @@ void finish(void) {
     refresh();
     resetty();
     endwin();
-    if (console) {
-#ifdef HAVE_CONSOLECHARS
-        va_system("consolechars -d");
-#elif defined(HAVE_SETFONT)
-        va_system("setfont");
-#endif
-    }
     exit(0);
 }
 
@@ -131,14 +123,6 @@ void c_die(char *msg, ...) {
     refresh();
     resetty();
     endwin();
-
-    if (console) {
-#ifdef HAVE_CONSOLECHARS
-        va_system("consolechars -d");
-#elif defined(HAVE_SETFONT)
-        va_system("setfont");
-#endif
-    }
 
     va_start(ap, msg);
     vfprintf(stderr, msg, ap);
@@ -173,8 +157,8 @@ void usage(void) {
 void version(void) {
     printf(" CMatrix version %s (compiled %s, %s)\n",
         VERSION, __TIME__, __DATE__);
-    printf("Email: abishekvashok@gmail.com\n");
-    printf("Web: https://github.com/abishekvashok/cmatrix\n");
+    printf(" Copyright (C) 2017-2024 Abishek V Ashok\n");
+    printf(" Copyright (C) 1999-2017, 2024- Chris Allegretta\n");
 }
 
 
@@ -444,6 +428,7 @@ int main(int argc, char *argv[]) {
         setenv("TERM", "linux", 1);
 #endif
     }
+    setlocale(LC_CTYPE, "C.UTF-8");
     if (tty) {
         FILE *ftty = fopen(tty, "r+");
         if (!ftty) {
@@ -476,23 +461,6 @@ int main(int argc, char *argv[]) {
     signal(SIGTSTP, sighandler);
 #endif
 
-if (console) {
-#ifdef HAVE_CONSOLECHARS
-        if (va_system("consolechars -f matrix") != 0) {
-            c_die
-                (" There was an error running consolechars. Please make sure the\n"
-                 " consolechars program is in your $PATH.  Try running \"consolechars -f matrix\" by hand.\n");
-        }
-#elif defined(HAVE_SETFONT)
-        if (va_system("setfont matrix") != 0) {
-            c_die
-                (" There was an error running setfont. Please make sure the\n"
-                 " setfont program is in your $PATH.  Try running \"setfont matrix\" by hand.\n");
-        }
-#else
-        c_die(" Unable to use both \"setfont\" and \"consolechars\".\n");
-#endif
-}
     if (has_colors()) {
         start_color();
         /* Add in colors, if available */
@@ -682,7 +650,7 @@ if (console) {
                             if (((int) rand() % 3) == 1) {
                                 matrix[0][j].val = 0;
                             } else {
-                                matrix[0][j].val = (int) rand() % randnum + randmin;
+                                matrix[0][j].val = rand() % CHARS_LEN;
                             }
                             spaces[j] = (int) rand() % LINES + 1;
                         }
@@ -782,7 +750,7 @@ if (console) {
                     } else if (matrix[i][j].val == -1) {
                         addch(' ');
                     } else {
-                        addch(matrix[i][j].val);
+                        addstr(chars_array[matrix[i][j].val]);
                     }
 
                     attroff(COLOR_PAIR(COLOR_WHITE));

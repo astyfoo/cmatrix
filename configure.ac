@@ -4,6 +4,15 @@ AC_INIT([cmatrix],[2.0],[abishekvashok@gmail.com])
 AC_CONFIG_SRCDIR([cmatrix.c])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE
+PKG_PROG_PKG_CONFIG
+
+if eval "test x$PKG_CONFIG = x"
+then
+  AC_MSG_ERROR([
+  *** The pkg-config is required to properly set flags.
+  *** Please install it and re-run ./configure.])
+  exit 1
+fi
 
 AC_CANONICAL_HOST
 case $host in
@@ -21,7 +30,7 @@ AC_PROG_MAKE_SET
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lncurses:
-AC_CHECK_LIB(ncurses, main)
+AC_CHECK_LIB(ncursesw, main)
 
 dnl Checks for header files.
 m4_warn([obsolete],
@@ -42,7 +51,11 @@ dnl Checks for libraries.
 AC_CHECK_HEADERS(curses.h ncurses.h)
 
 CURSES_LIB_NAME=""
-AC_CHECK_LIB(ncurses, tgetent, CURSES_LIB="-lncurses" CURSES_LIB_NAME=ncurses)
+
+AC_ARG_WITH([ncursesw], AS_HELP_STRING([--with-ncursesw], [Build with ncursesw (required, use for alternate install dir)]))
+PKG_CHECK_MODULES([NCURSESW], [ncursesw])
+
+AC_CHECK_LIB(ncursesw, tgetent, CURSES_LIB="-lncursesw" CURSES_LIB_NAME=ncursesw)
 
 if eval "test x$CURSES_LIB_NAME = x"
 then

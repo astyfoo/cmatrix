@@ -1,6 +1,9 @@
 bin_PROGRAMS = cmatrix
 cmatrix_SOURCES = cmatrix.c
 
+cmatrix_CFLAGS = @NCURSESW_CFLAGS@
+cmatrix_LDFLAGS = @NCURSESW_LIBS@
+
 man_MANS = cmatrix.1
 
 if MATRIX_FONTS
