@@ -79,6 +79,11 @@ int *spaces = NULL;  /* Spaces left to fill */
 int *updates = NULL; /* What does this do again? */
 #define CHARS_LEN 44 /* Size of the strings. Change this value if you
                          change the number of characters to print */
+
+#define RAND_LEN 1000 /* Set lower if somehow you are on an incredibly low memory
+                         system that still somehow supports ncursesw... */
+int *rand_array;
+
 char *chars_array[CHARS_LEN] = {"ﾊ", "ﾐ", "ﾋ", "ｰ", "ｳ", "ｼ",
                                 "ﾅ", "ﾓ", "ﾆ", "ｻ", "ﾜ", "ﾂ",
                                 "ｵ", "ﾘ", "ｱ", "ﾎ", "ﾃ", "ﾏ",
@@ -185,6 +190,12 @@ void var_init() {
         matrix[i] = matrix[i - 1] + COLS;
     }
 
+    rand_array = nmalloc(sizeof(int) * (RAND_LEN+1));
+    for (i = 0; i <= RAND_LEN; i++) {
+      rand_array[i] = rand() % CHARS_LEN + 1;
+      napms(2);
+    }
+
     if (length != NULL) {
         free(length);
     }
@@ -212,10 +223,10 @@ void var_init() {
         spaces[j] = (int) rand() % LINES + 1;
 
         /* And length of the stream */
-        length[j] = (int) rand() % (LINES - 3) + 3;
+        length[j] = (int) rand() % (LINES/2) + 3;
 
         /* Sentinel value for creation of new objects */
-        matrix[1][j].val = ' ';
+        matrix[1][j].val = -2;
 
         /* And set updates[] array for update speed. */
         updates[j] = (int) rand() % 3 + 1;
@@ -289,6 +300,20 @@ void resize_screen(void) {
     /* Do these because width may have changed... */
     clear();
     refresh();
+}
+
+/* Pre-allocate an array to read from, to reduce ongoing
+   CPU-utilization on older systems */
+int next_rand(void)
+{
+  static int index = 0;
+  int next = rand_array[index];
+
+  index++;
+  if (index > RAND_LEN) /* Just go back to more or less the start */
+    index = 0;
+
+  return next;
 }
 
 int main(int argc, char *argv[]) {
@@ -505,6 +530,14 @@ int main(int argc, char *argv[]) {
             count = 1;
         }
 
+        fprintf(stderr, "Matrix = \n");
+    for (int ii = 0; ii <= LINES; ii++) {
+        for (int jj = 0; jj <= 15; jj += 2) {
+            fprintf(stderr, "%3d ", matrix[ii][jj].val);
+        }
+        fprintf(stderr, "\n"); 
+    }
+
         if ((keypress = wgetch(stdscr)) != ERR) {
             if (screensaver == 1) {
 #ifdef USE_TIOCSTI
@@ -602,23 +635,24 @@ int main(int argc, char *argv[]) {
         for (j = 0; j <= COLS - 1; j += 2) {
             if ((count > updates[j] || asynch == 0) && pause == 0) {
 
-            if ((matrix[0][j].val == -1 || matrix[1][j].val == ' ')
+            if ((matrix[0][j].val < 0)
                 && spaces[j] > 0) {
                 spaces[j]--;
-            } else if (matrix[0][j].val == -1
-                || matrix[1][j].val == ' ') {
-                length[j] = (int) rand() % (LINES - 3) + 3;
-                matrix[0][j].val = (int) rand() % CHARS_LEN + 1;
+            } else if (matrix[0][j].val < 0
+                && matrix[1][j].val == -2) {
+                length[j] = (int) rand() % (LINES/2) + 3;
+                matrix[0][j].val = next_rand();
 
                 spaces[j] = (int) rand() % LINES + 1;
             }
+            fprintf(stderr, "spaces[%d] = %d, length[%d] = %d\n", j, spaces[j], j, length[j]);
             i = 0;
             y = 0;
             firstcoldone = 0;
             while (i <= LINES) {
 
                 /* Skip over spaces */
-                while (i <= LINES && (matrix[i][j].val == ' ' ||
+                while (i <= LINES && (matrix[i][j].val == -2 ||
                        matrix[i][j].val == -1)) {
                     i++;
                 }
@@ -630,23 +664,23 @@ int main(int argc, char *argv[]) {
                 /* Go to the head of this column */
                 z = i;
                 y = 0;
-                while (i <= LINES && (matrix[i][j].val != ' ' &&
+                while (i <= LINES && (matrix[i][j].val != -2 &&
                        matrix[i][j].val != -1)) {
                     matrix[i][j].is_head = false;
                     if (changes) {
                         if (rand() % 8 == 0)
-                            matrix[i][j].val = (int) rand() % CHARS_LEN + 1;
+                            matrix[i][j].val = next_rand();
                     }
                     i++;
                     y++;
                 }
 
                 if (i > LINES) {
-                    matrix[z][j].val = ' ';
+                    matrix[z][j].val = -2;
                     continue;
                 }
 
-                matrix[i][j].val = (int) rand() % CHARS_LEN + 1;
+                matrix[i][j].val = next_rand();
                 matrix[i][j].is_head = true;
 
                 /* If we're at the top of the column and it's reached its
@@ -655,7 +689,7 @@ int main(int argc, char *argv[]) {
                    already growing from growing accidentally =>
                  */
                 if (y > length[j] || firstcoldone) {
-                    matrix[z][j].val = ' ';
+                    matrix[z][j].val = -2;
                     matrix[0][j].val = -1;
                 }
                 firstcoldone = 1;
@@ -667,12 +701,12 @@ int main(int argc, char *argv[]) {
             for (i = y; i <= z; i++) {
                 move(i - y, j);
 
-                if (matrix[i][j].val == -3 || (matrix[i][j].is_head && !rainbow)) {
+                if (matrix[i][j].val == -2 || (matrix[i][j].is_head && !rainbow)) {
                     attron(COLOR_PAIR(COLOR_WHITE));
                     if (bold) {
                         attron(A_BOLD);
                     }
-                    if (matrix[i][j].val == -1 || matrix[i][j].val == ' ') {
+                    if (matrix[i][j].val < 0) {
                         addstr(" ");
                     } else {
                         addstr(chars_array[matrix[i][j].val]);
@@ -708,22 +742,13 @@ int main(int argc, char *argv[]) {
                        }
                     }
                     attron(COLOR_PAIR(mcolor));
-                    if (matrix[i][j].val == 1) {
-                        if (bold) {
-                            attron(A_BOLD);
-                        }
-                        addch('|');
-                        if (bold) {
-                            attroff(A_BOLD);
-                        }
-                    } else {
                         if (bold == 2 ||
                             (bold == 1 && matrix[i][j].val % 2 == 0)) {
                             attron(A_BOLD);
                         }
-                        if (matrix[i][j].val < 1 || matrix[i][j].val == ' ') {
+                        if (matrix[i][j].val < 1 || matrix[i][j].val == -2) {
                             addstr(" ");
-                        } else if (lambda && matrix[i][j].val != ' ') {
+                        } else if (lambda && matrix[i][j].val != -2) {
                             addstr("λ");
                         } else {
                               addstr(chars_array[matrix[i][j].val]);
@@ -732,8 +757,7 @@ int main(int argc, char *argv[]) {
                             (bold == 1 && matrix[i][j].val % 2 == 0)) {
                             attroff(A_BOLD);
                         }
-                    }
-                    attroff(COLOR_PAIR(mcolor));
+                        attroff(COLOR_PAIR(mcolor));
                 }
             }
         }
