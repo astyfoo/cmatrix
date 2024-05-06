@@ -136,7 +136,6 @@ void usage(void) {
     printf(" -c: Use Japanese characters as seen in the original matrix. Requires appropriate fonts\n");
     printf(" -f: Force the linux $TERM type to be on\n");
     printf(" -L: Lock mode (can be closed from another terminal)\n");
-    printf(" -o: Use old-style scrolling\n");
     printf(" -h: Print usage and exit\n");
     printf(" -n: No bold characters (overrides -b and -B, default)\n");
     printf(" -s: \"Screensaver\" mode, exits on first keystroke\n");
@@ -148,7 +147,7 @@ void usage(void) {
     printf(" -m: lambda mode\n");
     printf(" -k: Characters change while scrolling. (Works without -o opt.)\n");
     printf(" -t [tty]: Set tty to use\n");
-    printf(" Ignored for compatibility with old version: -l, -x");
+    printf(" Ignored for compatibility with old version: -l, -o, -x\n");
 
 }
 
@@ -301,7 +300,6 @@ int main(int argc, char *argv[]) {
     int bold = 0;
     int force = 0;
     int firstcoldone = 0;
-    int oldstyle = 0;
     int random = 0;
     int update = 4;
     int mcolor = COLOR_GREEN;
@@ -365,7 +363,9 @@ int main(int argc, char *argv[]) {
             force = 1;
             break;
         case 'l':
-            fprintf(stderr, "Ignoring deprecated argument: -l\n");
+        case 'o':
+        case 'x':
+            fprintf(stderr, "Ignoring unspported argument: -%c\n", optchr);
             break;
         case 'L':
             lock = 1;
@@ -384,14 +384,8 @@ int main(int argc, char *argv[]) {
         case '?':
             usage();
             exit(0);
-        case 'o':
-            oldstyle = 1;
-            break;
         case 'u':
             update = atoi(optarg);
-            break;
-        case 'x':
-            fprintf(stderr, "Ignoring deprecated argument: -x\n");
             break;
         case 'V':
             version();
@@ -608,104 +602,68 @@ int main(int argc, char *argv[]) {
         for (j = 0; j <= COLS - 1; j += 2) {
             if ((count > updates[j] || asynch == 0) && pause == 0) {
 
-                /* I don't like old-style scrolling, yuck */
-                if (oldstyle) {
-                    for (i = LINES - 1; i >= 1; i--) {
-                        matrix[i][j].val = matrix[i - 1][j].val;
-                    }
-                    random = (int) rand() % LINES/3 + 3;
+            if (matrix[0][j].val == -1 && matrix[1][j].val == ' '
+                && spaces[j] > 0) {
+                spaces[j]--;
+            } else if (matrix[0][j].val == -1
+                && matrix[1][j].val == ' ') {
+                length[j] = (int) rand() % (LINES - 3) + 3;
+                matrix[0][j].val = (int) rand() % CHARS_LEN;
 
-                    if (matrix[1][j].val == 0) {
-                        matrix[0][j].val = 1;
-                    } else if (matrix[1][j].val == ' '
-                             || matrix[1][j].val == -1) {
-                        if (spaces[j] > 0) {
-                            matrix[0][j].val = ' ';
-                            spaces[j]--;
-                        } else {
+                spaces[j] = (int) rand() % LINES + 1;
+            }
+            i = 0;
+            y = 0;
+            firstcoldone = 0;
+            while (i <= LINES) {
 
-                            /* Random number to determine whether head of next column
-                               of chars has a white 'head' on it. */
-
-                            if (((int) rand() % 3) == 1) {
-                                matrix[0][j].val = -3;
-                            } else
-                                matrix[0][j].val = rand() % CHARS_LEN;
-                            spaces[j] = (int) rand() % LINES + 1;
-                        }
-                    } else
-                        matrix[0][j].val = (int) rand() % CHARS_LEN;
-
-                } else { /* New style scrolling (default) */
-                    if (matrix[0][j].val == -1 && matrix[1][j].val == ' '
-                        && spaces[j] > 0) {
-                        spaces[j]--;
-                    } else if (matrix[0][j].val == -1
-                        && matrix[1][j].val == ' ') {
-                        length[j] = (int) rand() % (LINES - 3) + 3;
-                        matrix[0][j].val = (int) rand() % CHARS_LEN;
-
-                        spaces[j] = (int) rand() % LINES + 1;
-                    }
-                    i = 0;
-                    y = 0;
-                    firstcoldone = 0;
-                    while (i <= LINES) {
-
-                        /* Skip over spaces */
-                        while (i <= LINES && (matrix[i][j].val == ' ' ||
-                               matrix[i][j].val == -1)) {
-                            i++;
-                        }
-
-                        if (i > LINES) {
-                            break;
-                        }
-
-                        /* Go to the head of this column */
-                        z = i;
-                        y = 0;
-                        while (i <= LINES && (matrix[i][j].val != ' ' &&
-                               matrix[i][j].val != -1)) {
-                            matrix[i][j].is_head = false;
-                            if (changes) {
-                                if (rand() % 8 == 0)
-                                    matrix[i][j].val = (int) rand() % CHARS_LEN;
-                            }
-                            i++;
-                            y++;
-                        }
-
-                        if (i > LINES) {
-                            matrix[z][j].val = ' ';
-                            continue;
-                        }
-
-                        matrix[i][j].val = (int) rand() % CHARS_LEN - 1;
-                        matrix[i][j].is_head = true;
-
-                        /* If we're at the top of the column and it's reached its
-                           full length (about to start moving down), we do this
-                           to get it moving.  This is also how we keep segments not
-                           already growing from growing accidentally =>
-                         */
-                        if (y > length[j] || firstcoldone) {
-                            matrix[z][j].val = ' ';
-                            matrix[0][j].val = -1;
-                        }
-                        firstcoldone = 1;
-                        i++;
-                    }
+                /* Skip over spaces */
+                while (i <= LINES && (matrix[i][j].val == ' ' ||
+                       matrix[i][j].val == -1)) {
+                    i++;
                 }
-            }
-            /* A simple hack */
-            if (!oldstyle) {
-                y = 1;
-                z = LINES;
-            } else {
+
+                if (i > LINES) {
+                    break;
+                }
+
+                /* Go to the head of this column */
+                z = i;
                 y = 0;
-                z = LINES - 1;
+                while (i <= LINES && (matrix[i][j].val != ' ' &&
+                       matrix[i][j].val != -1)) {
+                    matrix[i][j].is_head = false;
+                    if (changes) {
+                        if (rand() % 8 == 0)
+                            matrix[i][j].val = (int) rand() % CHARS_LEN;
+                    }
+                    i++;
+                    y++;
+                }
+
+                if (i > LINES) {
+                    matrix[z][j].val = ' ';
+                    continue;
+                }
+
+                matrix[i][j].val = (int) rand() % CHARS_LEN - 1;
+                matrix[i][j].is_head = true;
+
+                /* If we're at the top of the column and it's reached its
+                   full length (about to start moving down), we do this
+                   to get it moving.  This is also how we keep segments not
+                   already growing from growing accidentally =>
+                 */
+                if (y > length[j] || firstcoldone) {
+                    matrix[z][j].val = ' ';
+                    matrix[0][j].val = -1;
+                }
+                firstcoldone = 1;
+                i++;
             }
+            }
+            y = 1;
+            z = LINES;
             for (i = y; i <= z; i++) {
                 move(i - y, j);
 
