@@ -77,14 +77,14 @@ cmatrix **matrix = (cmatrix **) NULL;
 int *length = NULL;  /* Length of cols in each line */
 int *spaces = NULL;  /* Spaces left to fill */
 int *updates = NULL; /* What does this do again? */
-#define CHARS_LEN 44 /* Size of the strings. Change this value if you
-                         change the number of characters to print */
 
 #define RAND_LEN 1000 /* Set lower if somehow you are on an incredibly low memory
                          system that still somehow supports ncursesw... */
 int *rand_array;
 
-char *chars_array[CHARS_LEN] = {"ﾊ", "ﾐ", "ﾋ", "ｰ", "ｳ", "ｼ",
+#define CHARS_LEN 44 /* Number of strings. Change this value if you
+                        change the number of characters to print */
+char *chars_array[CHARS_LEN] = {"", "ﾊ", "ﾐ", "ﾋ", "ｰ", "ｳ", "ｼ",
                                 "ﾅ", "ﾓ", "ﾆ", "ｻ", "ﾜ", "ﾂ",
                                 "ｵ", "ﾘ", "ｱ", "ﾎ", "ﾃ", "ﾏ",
                                 "ｹ", "ﾒ", "ｴ", "ｶ", "ｷ", "ﾑ",
@@ -193,7 +193,7 @@ void var_init() {
     rand_array = nmalloc(sizeof(int) * (RAND_LEN+1));
     for (i = 0; i <= RAND_LEN; i++) {
       rand_array[i] = rand() % CHARS_LEN + 1;
-      napms(2);
+      napms(1);
     }
 
     if (length != NULL) {
@@ -530,14 +530,6 @@ int main(int argc, char *argv[]) {
             count = 1;
         }
 
-        fprintf(stderr, "Matrix = \n");
-    for (int ii = 0; ii <= LINES; ii++) {
-        for (int jj = 0; jj <= 15; jj += 2) {
-            fprintf(stderr, "%3d ", matrix[ii][jj].val);
-        }
-        fprintf(stderr, "\n"); 
-    }
-
         if ((keypress = wgetch(stdscr)) != ERR) {
             if (screensaver == 1) {
 #ifdef USE_TIOCSTI
@@ -645,7 +637,6 @@ int main(int argc, char *argv[]) {
 
                 spaces[j] = (int) rand() % LINES + 1;
             }
-            fprintf(stderr, "spaces[%d] = %d, length[%d] = %d\n", j, spaces[j], j, length[j]);
             i = 0;
             y = 0;
             firstcoldone = 0;
