@@ -31,7 +31,6 @@
 - [Usage](#usage)
 - [Captures](#captures)
     - [Screenshots](#screenshots)
-    - [Screencasts](#screencasts)
 - [Maintainer](#maintainers)
     - [Contributors](#our-contributors)
 - [Contribution Guide](#contribution-guide)
@@ -132,16 +131,9 @@ option on older/slower systems to take a time penalty up front and save cycles a
 
 #### :small_blue_diamond: Screenshots
 
-<!-- ![Special Font & bold](data/img/capture_bold_font.png?raw=true "cmatrix -bx") -->
-<p align="center">
-<img src="./data/img/capture_bold_font.png" alt="cmatrix screenshot">
-</p>
-
-#### :small_blue_diamond: Screencasts
-
 <!-- ![Movie-Like Cast](data/img/cmatrix-utf8-version-1.gif?raw=true "cmatrix -ba") -->
 <p align="center">
-<img src="./data/img/capture_orig.gif" alt="cmatrix screencast">
+<img src="./data/img/cmatrix-utf8-version-1.gif" alt="cmatrix screencast">
 </p>
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
