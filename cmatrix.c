@@ -139,19 +139,19 @@ void usage(void) {
     printf(" -b: Bold characters on\n");
     printf(" -B: All bold characters (overrides -b)\n");
     printf(" -c: Use Japanese characters as seen in the original matrix. Requires appropriate fonts\n");
-    printf(" -f: Force the linux $TERM type to be on\n");
-    printf(" -L: Lock mode (can be closed from another terminal)\n");
-    printf(" -h: Print usage and exit\n");
-    printf(" -n: No bold characters (overrides -b and -B, default)\n");
-    printf(" -s: \"Screensaver\" mode, exits on first keystroke\n");
-    printf(" -V: Print version information and exit\n");
-    printf(" -M [message]: Prints your message in the center of the screen. Overrides -L's default message.\n");
-    printf(" -u delay (0 - 10, default 4): Screen update delay\n");
     printf(" -C [color]: Use this color for matrix (default green)\n");
-    printf(" -r: rainbow mode\n");
-    printf(" -m: lambda mode\n");
+    printf(" -f: Force the linux $TERM type to be on\n");
+    printf(" -h: Print usage and exit\n");
     printf(" -k: Characters change while scrolling. (Works without -o opt.)\n");
+    printf(" -L: Lock mode (can be closed from another terminal)\n");
+    printf(" -m: lambda mode\n");
+    printf(" -M [message]: Prints your message in the center of the screen. Overrides -L's default message.\n");
+    printf(" -n: No bold characters (overrides -b and -B, default)\n");
+    printf(" -r: rainbow mode\n");
+    printf(" -s: \"Screensaver\" mode, exits on first keystroke\n");
     printf(" -t [tty]: Set tty to use\n");
+    printf(" -u delay (0 - 10, default 4): Screen update delay\n");
+    printf(" -V: Print version information and exit\n");
     printf(" Ignored for compatibility with old version: -l, -o, -x\n");
 
 }
