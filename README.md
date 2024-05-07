@@ -111,11 +111,10 @@ cmatrix -ba -u 2 -C red
 
 For more options and **help** run `cmatrix -h` <br>OR<br> Read Manual Page by running command `man cmatrix`
 
-_To get the program to look most like the movie, use `cmatrix -lba`_
-_To get the program to look most like the Win/Mac screensaver, use `cmatrix -ol`_
+_To get the program to look most like the movie, use `cmatrix -ba`_
 
-> :round_pushpin: _Note: cmatrix is probably not particularly portable or efficient, but it won't hog
-**too** much CPU time._
+> :round_pushpin: _Note: cmatrix is probably not particularly portable or efficient. Use the -p
+option on older/slower systems to take a time penalty up front and save cycles as it runs.
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
@@ -162,11 +161,10 @@ _To get the program to look most like the Win/Mac screensaver, use `cmatrix -ol`
 - ➤ **John Donahue** for helping with transparent term support
 - ➤ **Ben Esacove** for Redhat 6 compatibility w/matrix.psf.gz
 - ➤ **jwz** for the xmatrix module to xscreensaver at http://www.jwz.org/xscreensaver.
-- Chris Allegretta's girlfriend **Amy** for not killing him when he stayed up till 3 AM
-  writing code.
+-  ^~  **Xavier Allegretta** for being both a nuisance and the greatest inspiration a father could have.
 - ➤ **Sumit Kumar Soni** for beautifying the README.
 - The makers of the Matrix for one kickass movie!
-- ➤ Everyone who has sent (and who will send) us and Chris mails regarding
+- ➤ Everyone who has sent (and who will send) us mails regarding
   bugs, comments, patches or just a simple hello.
 - ➤ Everyone who has contributed to the project by opening issues and PRs on the github repository.
 
