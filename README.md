@@ -46,7 +46,17 @@ flying in and out in a terminal like as seen in "The Matrix" movie. It can
 scroll lines all at the same rate or asynchronously and at a user-defined
 speed.
 
-CMAtrix is inspired from 'The Matrix' movie. If you haven’t seen this movie and you are a fan of computers or sci-fi in general, go see this movie!!!
+This build of CMatrix is a (likely) short-lived branch created by the original
+author, streamlining many options and re-writing sections as a challenge to
+himself. It requires wide character ncurses support (ncursesw), and does away with all
+the font nonsense, in favor of a simple rending of the fonts using their Japanese
+alphabet and Arabic numeral UTF-8 versions, even if they are flipped from their
+'proper' direction.
+
+It also eliminates the 'old-style' scrolling from the original Windows screensaver,
+which was never authentic to the movie to begin with.
+
+CMatrix is inspired from 'The Matrix' movie. If you haven’t seen this movie and you are a fan of computers or sci-fi in general, go see this movie!!!
 
 > :grey_exclamation:`Disclaimer` : We are in no way affiliated in any way with the movie "The Matrix", "Warner Bros" nor
 any of its affiliates in any way, just fans.
