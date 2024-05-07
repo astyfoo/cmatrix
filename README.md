@@ -171,7 +171,7 @@ option on older/slower systems to take a time penalty up front and save cycles a
 - ➤ **John Donahue** for helping with transparent term support
 - ➤ **Ben Esacove** for Redhat 6 compatibility w/matrix.psf.gz
 - ➤ **jwz** for the xmatrix module to xscreensaver at http://www.jwz.org/xscreensaver.
--  ^~  **Xavier Allegretta** for being both a nuisance and the greatest inspiration a father could have.
+- ➤ **Xavier Allegretta** for being both a nuisance and the greatest inspiration a father could have.
 - ➤ **Sumit Kumar Soni** for beautifying the README.
 - The makers of the Matrix for one kickass movie!
 - ➤ Everyone who has sent (and who will send) us mails regarding
