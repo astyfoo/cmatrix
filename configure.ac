@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([cmatrix],[3.0ca1],[chrisa@asty.org])
+AC_INIT([cmatrix],[3.0ca1-git],[chrisa@asty.org])
 AC_CONFIG_SRCDIR([cmatrix.c])
 AC_CONFIG_HEADERS(config.h)
 AM_INIT_AUTOMAKE
