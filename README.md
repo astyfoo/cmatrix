@@ -139,7 +139,7 @@ option on older/slower systems to take a time penalty up front and save cycles a
 
 #### :small_blue_diamond: Screencasts
 
-<!-- ![Movie-Like Cast](data/img/capture_orig.gif?raw=true "cmatrix -xba") -->
+<!-- ![Movie-Like Cast](data/img/cmatrix-utf8-version-1.gif?raw=true "cmatrix -ba") -->
 <p align="center">
 <img src="./data/img/capture_orig.gif" alt="cmatrix screencast">
 </p>
