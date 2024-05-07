@@ -80,7 +80,7 @@ int *updates = NULL; /* What does this do again? */
 
 #define RAND_LEN 1000 /* Set lower if somehow you are on an incredibly low memory
                          system that still somehow supports ncursesw... */
-int *rand_array;
+int *rand_array = NULL;
 
 #define CHARS_LEN 44 /* Number of strings. Change this value if you
                         change the number of characters to print */
@@ -175,6 +175,41 @@ void *nmalloc(size_t howmuch) {
     return r;
 }
 
+/* If we're pre-allocating a string of random ints to save
+   energy, do it here. Add a fun screen message while we do it */
+void rand_init()
+{
+    int i, nextchar = 0;
+    char *funstring = "Knock, knock, Neo.";
+
+    if (rand_array != NULL) {
+        free(rand_array);
+    }
+
+    attron(COLOR_PAIR(COLOR_GREEN));
+    attron(A_BOLD);
+
+    mvaddch(0, 0, funstring[0]);
+    nextchar++;
+
+    rand_array = nmalloc(sizeof(int) * (RAND_LEN+1));
+    int segment_size = RAND_LEN / strlen(funstring) - 2;
+    int last = 0;
+    for (i = 0; i <= RAND_LEN; i++) {
+      rand_array[i] = rand() % (CHARS_LEN - 1) + 1;
+
+      if (i / segment_size > nextchar) {
+         addch(funstring[nextchar]);
+         refresh();
+         nextchar++;
+      }
+      napms(5);
+    }
+    attroff(COLOR_PAIR(COLOR_GREEN));
+    attroff(A_BOLD);
+    clear();
+}
+
 /* Initialize the global variables */
 void var_init() {
     int i, j;
@@ -188,12 +223,6 @@ void var_init() {
     matrix[0] = nmalloc(sizeof(cmatrix) * (LINES + 1) * COLS);
     for (i = 1; i <= LINES; i++) {
         matrix[i] = matrix[i - 1] + COLS;
-    }
-
-    rand_array = nmalloc(sizeof(int) * (RAND_LEN+1));
-    for (i = 0; i <= RAND_LEN; i++) {
-      rand_array[i] = rand() % (CHARS_LEN - 1) + 1;
-      napms(1);
     }
 
     if (length != NULL) {
@@ -304,12 +333,20 @@ void resize_screen(void) {
 
 /* Pre-allocate an array to read from, to reduce ongoing
    CPU-utilization on older systems */
-int next_rand(void)
+int next_rand(int preallocate)
 {
   static int index = 0;
-  int next = rand_array[index];
+  int next;
 
+  /* If we didn't pre-allocate, keep being inneficient */
+  if (preallocate == 0) {
+    return(rand() % (CHARS_LEN - 1) + 1);
+  }
+
+  /* Else print a fun message while we generate the randoms */
+  next = rand_array[index];
   index++;
+
   if (index > RAND_LEN) /* Just go back to more or less the start */
     index = 0;
 
@@ -334,6 +371,7 @@ int main(int argc, char *argv[]) {
     int pause = 0;
     int classic = 0;
     int changes = 0;
+    int preallocate = 0;
     char *msg = "";
     char *tty = NULL;
 
@@ -342,7 +380,7 @@ int main(int argc, char *argv[]) {
 
     /* Many thanks to morph- (morph@jmss.com) for this getopt patch */
     opterr = 0;
-    while ((optchr = getopt(argc, argv, "abBcfhlLnrosmxkVM:u:C:t:")) != EOF) {
+    while ((optchr = getopt(argc, argv, "abBcfhklLnrosmpxVM:u:C:t:")) != EOF) {
         switch (optchr) {
         case 's':
             screensaver = 1;
@@ -401,6 +439,9 @@ int main(int argc, char *argv[]) {
             break;
         case 'M':
             msg = strdup(optarg);
+            break;
+        case 'p':
+            preallocate = 1;
             break;
         case 'n':
             bold = -1;
@@ -505,6 +546,8 @@ int main(int argc, char *argv[]) {
     }
 
     var_init();
+    if (preallocate)
+      rand_init();
 
     while (1) {
 #ifndef _WIN32
@@ -633,7 +676,7 @@ int main(int argc, char *argv[]) {
             } else if (matrix[0][j].val < 0
                 && matrix[1][j].val == -2) {
                 length[j] = (int) rand() % (LINES/2) + 3;
-                matrix[0][j].val = next_rand();
+                matrix[0][j].val = next_rand(preallocate);
 
                 spaces[j] = (int) rand() % LINES + 1;
             }
@@ -660,7 +703,7 @@ int main(int argc, char *argv[]) {
                     matrix[i][j].is_head = false;
                     if (changes) {
                         if (rand() % 8 == 0)
-                            matrix[i][j].val = next_rand();
+                            matrix[i][j].val = next_rand(preallocate);
                     }
                     i++;
                     y++;
@@ -671,12 +714,12 @@ int main(int argc, char *argv[]) {
                     continue;
                 }
 
-                matrix[i][j].val = next_rand();
+                matrix[i][j].val = next_rand(preallocate);
                 matrix[i][j].is_head = true;
 
                 /* If we're at the top of the column and it's reached its
                    full length (about to start moving down), we do this
-                   to get it moving.  This is also how we keep segments not
+                   to get it moving.  This is also how we keep segment_sizes not
                    already growing from growing accidentally =>
                  */
                 if (y > length[j] || firstcoldone) {
