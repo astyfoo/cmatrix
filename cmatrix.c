@@ -192,7 +192,7 @@ void var_init() {
 
     rand_array = nmalloc(sizeof(int) * (RAND_LEN+1));
     for (i = 0; i <= RAND_LEN; i++) {
-      rand_array[i] = rand() % CHARS_LEN + 1;
+      rand_array[i] = rand() % (CHARS_LEN - 1) + 1;
       napms(1);
     }
 
@@ -204,7 +204,7 @@ void var_init() {
     if (spaces != NULL) {
         free(spaces);
     }
-    spaces = nmalloc(COLS* sizeof(int));
+    spaces = nmalloc(COLS * sizeof(int));
 
     if (updates != NULL) {
         free(updates);
