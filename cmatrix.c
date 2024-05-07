@@ -138,7 +138,6 @@ void usage(void) {
     printf(" -a: Asynchronous scroll\n");
     printf(" -b: Bold characters on\n");
     printf(" -B: All bold characters (overrides -b)\n");
-    printf(" -c: Use Japanese characters as seen in the original matrix. Requires appropriate fonts\n");
     printf(" -C [color]: Use this color for matrix (default green)\n");
     printf(" -f: Force the linux $TERM type to be on\n");
     printf(" -h: Print usage and exit\n");
@@ -369,7 +368,6 @@ int main(int argc, char *argv[]) {
     int lambda = 0;
     int randnum = 0;
     int pause = 0;
-    int classic = 0;
     int changes = 0;
     int preallocate = 0;
     char *msg = "";
@@ -419,12 +417,10 @@ int main(int argc, char *argv[]) {
                        "white, yellow, cyan, magenta " "and black.\n");
             }
             break;
-        case 'c':
-            classic = 1;
-            break;
         case 'f':
             force = 1;
             break;
+        case 'c':
         case 'l':
         case 'o':
         case 'x':
