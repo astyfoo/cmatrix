@@ -1,6 +1,6 @@
-.TH CMatrix 1 "Mon May 3 1999"
+.TH CMatrix 1 "Fri Jan 02 2026"
 .SH NAME
-CMatrix
+CMatrix 3.1xlah
 .SH SYNOPSIS
 .B cmatrix
 [\-abBflohnsmVx] [\-u update] [\-C color]
@@ -9,7 +9,10 @@ Shows a scrolling 'Matrix' like screen in Linux
 .SS OPTIONS
 .TP
 .I "\-a"
-Asynchronous scroll
+Asynchronous scroll (on by default)
+.TP
+.I "\-A"
+Disable asynchronous scroll
 .TP
 .I "\-b"
 Bold characters on
@@ -17,60 +20,65 @@ Bold characters on
 .I "\-B"
 All bold characters (overrides \-b)
 .TP
+.I "\-c"
+Use UTF-8 (if libncursesw is enabled)
+.TP
+.I "\-C color"
+Set color to specified string (default green)
+.TP
 .I "\-f"
 Force the linux $TERM type to be on
-.TP
-.I "\-l"
-Linux mode (sets "matrix.fnt" font in console)
-.TP
-.I "\-o"
-Use old-style scrolling
-.TP
-.I "\-c"
-Only print the shadows of letters 
-.TP
-.I "\-L"
-Locks cmatrix, Unable to quit
 .TP
 .I "\-h, \-?"
 Print usage and exit
 .TP
-.I "\-r"
-"Rainbow" mode, rainbow colored character
-.TP
 .I "\-k"
-Every characters change 
+Characters in columns occasionally change
 .TP
-.I "\-n"
-No bold characters (overrides \-b and \-B)
+.I "\-l"
+Linux console mode (sets "matrix.psf" font in console, might not work with libncursesw)
 .TP
-.I "\-s"
-"Screensaver" mode, exits on first keystroke
+.I "\-L"
+Locks cmatrix so that it cannot be exited
 .TP
 .I "\-m"
-"Lambda" mode, every character becomes a lambda
-.TP
-.I "\-x"
-X window mode, use if your xterm is using mtx.pcf
-.TP
-.I "\-V"
-Print version information and exit
-.TP
-.I "\-u delay"
-Screen update delay 0 - 9, default 4
-.TP
-.I "\-C color"
-Use this color for matrix (default green).
-Valid colors are green, red, blue, white, yellow, cyan, magenta and black.
+Lambda mode, every character becomes a lambda (if libncursesw is enabled)
 .TP
 .I "\-M message"
 Add a message in the center of cmatrix
 .TP
+.I "\-n"
+No bold characters (overrides \-b and \-B)
+.TP
+.I "\-o"
+Use old-style scrolling
+.TP
+.I "\-p"
+Prealloc random values
+.TP
+.I "\-P amount"
+Specify number of random values to preallocate (implies -p)
+.TP
+.I "\-r"
+Rainbow mode, columns being given random colours
+.TP
+.I "\-s"
+Screensaver mode, exits on first keystroke
+.TP
 .I "\-t tty"
 Set tty to use
+.TP
+.I "\-u delay"
+Screen update delay 0 - 9, default 4
+.TP
+.I "\-V"
+Print version information and exit
+.TP
+.I "\-x"
+X window mode, use with a terminal using mtx.pcf
 .SS KEYSTROKES
 The following keystrokes are available during execution (unavailable in
-\-s mode)
+\-s mode or when locked)
 .TP
 .I "a"
 Toggle asynchronous scroll
@@ -81,21 +89,37 @@ Random bold characters
 .I "B"
 All bold characters
 .TP
+.I "k"
+Toggle random character changes
+.TP
+.I "m"
+Toggle lambda mode
+.TP
 .I "n"
 Turn off bold characters
+.TP
+.I "o"
+Old-style scrolling
+.TP
+.I "p"
+Pause scrolling
+.TP
+.I "q"
+Quit the program
+.TP
+.I "r"
+Toggle rainbow mode
 .TP
 .I "0\-9"
 Adjust update speed
 .TP
-.I "! @ # $ % ^ & )"
+.I "! @ # $ % ^ &"
 Change the color of the matrix to the corresponding color:
 ! \- red, @ \- green, # \- yellow, $ \- blue, % \- magenta, ^ \- cyan,
-& \- white, ) \- black.
-.TP
-.I "q"
-Quit the program
+& \- white.
 .SH BUGS
 This program is very CPU intensive.  Don't be surprised if it eats up over
 40% of your CPU at times.
 .SH HOMEPAGE
-http://www.github.com/abishekvashok/cmatrix
+http://asty.org/cmatrix
+

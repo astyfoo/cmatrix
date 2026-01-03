@@ -1,2 +1,96 @@
-Dummy file.
-Please see: https://github.com/abishekvashok/cmatrix
+cmatrix 3.1xlah - 01/02/2026 - Xylia Allegretta:
+	- Made libncursesw optional at compile-time.
+	- Moved key polling to after drawing logic to ensure something
+	  has always been drawn when a refresh occurs.
+	- Changed getopt() logic to error out when invalid flags are passed.
+	- Re-added -c, -l and -x options.
+	- Added override order to -c, -l and -x options.
+	- Added libncursesw support for -x.
+	- Re-added -o and overhauled its internal logic to be more similar
+	  to normal scrolling.
+	- Altered new-style scrolling to use the range 0 <= i < LINES
+	  instead of 1 <= i <= LINES.
+		- This allows for the matrix to be slightly smaller, saving
+	 	  memory.
+		- This also makes its behavior more similar to old-style
+		  scrolling, which makes switching possible.
+	- Added 'o' as a toggle for old/new style scrolling.
+	- Re-added information to many files that were previously blank,
+	  like AUTHORS, NEWS, README, and this ChangeLog.
+	- Replaced the god-awful (and inconsistent) space indentation
+	  with tab-based indentation, which is much easier to navigate.
+	- Added more comments to improve readability.
+	- Condensed a ton of variables into one flags variable.
+	- Simplified code logic of converting a colour string to a macro.
+	- Added the macro MTX_BLANK to make it more clear
+	  what the sentinel value -1 means.
+	- Removed the unnecessary sentinel value -2.
+	- Replaced the is_head bool with the sentinel value MTX_HEAD,
+	  reducing the matrix from an array of structs to ints.
+		- As a result, the last character of a column will change
+		  even when the program is paused, or (if -a is enabled)
+		  when an individual line isn't moving for a cycle. The
+		  character replacing it when the column scrolls will also
+		  be different, when before, it would stay the same. This
+		  probably doesn't matter to anyone but myself, but it's
+		  still worth pointing out.
+	- Added a toggle for the -k option during execution with 'k'.
+	- Replaced the 'r' enable key with a toggle.
+	- Made toggles less case-sensitive when applicable.
+	- Sped up execution of rand calls by not using ifs to
+	  determine if 'prealloc' is set.
+	- Increased speed of prealloc intro text.
+	- Added -P option to determine number of preallocated ints.
+	- Altered 'rainbow' mode to affect entire columns at a
+	  time and change less often. This hurts my eyes significantly
+	  less, and looks more interesting, I think.
+	- Added support for DESTDIR and --prefix for font installations.
+	- Updated directory locations for font installations.
+	- Removed the 'L' toggle because it's far too easy to hit by
+	  accident.
+	- And definitely other minor changes that I'm forgetting about... :p
+
+cmatrix 2.0 - 03/29/2019 - Abishek V Ashok:
+	- Adds classical Japanese character support out of the box
+	- New rainbow mode
+	- New lambda mode
+	- Adds support for cmake
+	- Facilitates building without matrix fonts
+	- Fixes various bugs
+	- Adds additional support information to README.md
+	- Fixes Travis CI bugs and adds new test cases
+
+cmatrix 1.2a - 03/31/2002 - Chris Allegretta:
+	- Eliminated MAXLINES and MAXCOLS variables, now uses malloc()
+	  to allocate the necessary memory for the lines and cols.  Vars
+	  matrix, spaces, length, updates all moved to global variables
+	  as pointers.  New function var_init().  New malloc wrapper
+	  nmalloc (taken from nano).
+	- Added resize code, mostly taken from nano.  New configure.in checks
+	  for resizeterm() and wresize().  New signal handler handle_sighup().
+	- The -f option now forces the linux $TERM type ON instead of OFF, since
+	  modern Linux systems seem to work fine without it.
+	- Added config.sub and config.guess
+	- Added cmatrix.spec.in file, based on nanos.spec.in file by
+	  Brett <brett@bad-sports.com>.
+	cmatrix-1.1b - 04/09/2000
+	- Added support for consolechars command as well as setfont.  Changes
+	  affect configure.in and cmatrix.c (main).
+	- cmatrix.c:
+	  main():
+		- Changed optchr and keypress to ints.  Fixes endless loop
+		  condition on Irix.
+	  c_die():
+		- New function, uses va_args to die with better info on the
+		  screen.
+	- configure.in:
+	  - Rewrote tests for console and X window font directories.  Moved all
+	    font searches to end of the file so error messages could be more
+	    easily seen when running configure.
+	- Makefile.am:
+	  - Better information messages for installing X window fonts.
+
+cmatrix-1.1a - 04/03/2000 - Chris Allegretta:
+	- New autoconf support.  Probably a few things broken but it's a helluva
+	  lot better than the previous Makefile stuff.
+	- Updated email and web pages in documentation.

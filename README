@@ -1,2 +1,34 @@
-Dummy file.
-Please see: https://github.com/abishekvashok/cmatrix
+CMatrix - show a scrolling 'Matrix' like screen in Linux (curses based)
+------------------------------------------------------------------------------
+
+New Repo:
+	https://github.com/astyfoo/cmatrix
+Version 2.0:
+	https://github.com/abishekvashok/cmatrix
+Original CMatrix Homepage:
+	http://www.asty.org/cmatrix
+
+To compile the program, type './configure && ./make'.
+
+CMatrix by default operates in 'eye candy' mode.  It must be aborted with
+control-c or 'q'.  If you wish for more of a 'screen saver' effect, you
+must specify -s on the command line.  For usage, run 'cmatrix -h'.
+
+Thanks to:
+- Krisjon Hanson and Bjoern Ganslandt for helping with bold support and 
+  Bjoern again for the cursor removal code, helping with the -u and -l
+  modes/flags, and Makefile improvements.
+- Adam Gurno for multi-color support.
+- Garrick West for debian consolefont dir support.
+- nemo for design thoughts and continuous help and support.
+- John Donahue for helping with transparent term support
+- Ben Esacove for Redhat 6 compatibility w/matrix.psf.gz
+- Everyone who has been sending (and who will send) me mail regarding
+  bugs, comments, patches or just a hello. =-)
+- jwz for the xmatrix module to xscreensaver at http://www.jwz.org/xscreensaver.
+- My girlfriend Amy for not killing me when I stayed up till 3AM writing this =)
+- The makers of the Matrix for one kickass movie!
+- Various GitHub contributors
+
+This software is provided under the GNU GPL.  I am in no way affiliated
+in any way with the movie 'The Matrix', just a big fan.

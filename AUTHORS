@@ -1,2 +1,11 @@
-Dummy file.
-Please see: https://github.com/abishekvashok/cmatrix
+This file lists people who have made significant contribution to CMatrix
+after April 3, 2000.  For earlier and more minor contributions please see
+the README file and CMatrix source code.
+-------------------------------------------------------------------------
+
+Xylia Allegretta
+	* Developer of 3.1xlah
+Chris Allegretta <chrisa@asty.org>
+        * Original program author and maintainer, developer of 3.0ca1
+Abishek V Ashok
+	* Maintainer and primary developer of 2.0

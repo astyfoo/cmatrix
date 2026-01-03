@@ -1,2 +1,56 @@
-Dummy file.
-Please see: https://github.com/abishekvashok/cmatrix
+cmatrix 3.1xlah - 01/02/2026 - Xylia Allegretta:
+	  Heya! While I generally liked the improvements made in 3.0ca1,
+	I definitely still liked having the old features around, and so
+	I felt it'd be a good idea to try to add them back while keeping
+	the additions. Unfortunately, I found that cmatrix.c (and the
+	whole repository, to be honest), was a *complete* mess. The most
+	annoying thing was definitely the space indentation instead of
+	tabs, making navigating with a text editor like nano entitely
+	miserable, but pretty much everything was entirely unworkable,
+	with nonsensical spacing and formatting, several random unused
+	variables, barely any comments, a different variable for each
+	flag, and a bunch of other weirdness. The other files in the
+	repo were also in a bad state, with many of them just being
+	'dummy' files, and a lot of useful information present in
+	1.2a now missing. Anyway, so, I've been spending a good number
+	of hours trying to refactor this code while adding new (and old)
+	features, and I think the result has been pretty good, although
+	libncursesw is certainly getting on my nerves. Feel free to check
+	the ChangeLog for more detailed information. Oh, and happy new year!
+
+cmatrix 3.0ca1 - 05/07/2024 - Chris Allegretta:
+	  This build of CMatrix streamlines many options and re-writes
+	sections as a personal challenge. It requires wide character
+	ncurses support (ncursesw), and does away with all the font
+	nonsense, in favor of a simple rending of the fonts using their
+	Japanese alphabet and Arabic numeral UTF-8 versions, even if
+	they are flipped from their 'proper' direction. It also eliminates
+	the 'old-style' scrolling from the original Windows screensaver,
+	which was never authentic to the movie to begin with.
+
+cmatrix 1.2a - 03/31/2002 - Chris Allegretta:
+	  Happy Easter!  After a long, long dormant period, CMatrix 
+	has finally seen a new release.  The static limitations
+	on size are now history, as the matrix size is allocated
+	dynamically.  CMatrix can now also be resized on the
+	fly. Also, the -f option has been reversed, it now turns
+	the "linux" $TERM type on instead of off; most modern
+	GNU/Linux systems don't seem to need this option anymore.
+	There is now also a .spec file included for easy build.
+
+cmatrix 1.1b - 04/09/2000 - Chris Allegretta:
+	  CMatrix 1.1b includes support for the consolechars command
+	as well as the older setfont.  Also included is better
+	autoconf support and more helpful instruction in the
+	Makefiles.
+
+cmamtrix 1.1a - 04/03/2000 - Chris Allegretta:
+	  After a hiatus, interest in the project has seemed to swell,
+	so I'm releasing a (hopefully) improved and updated version of
+	CMatrix. As with nano, CMatrix has a page at SourceForge.net
+	to further facilitate development, as well as two mailing
+	lists, cmatrix-announce@lists.sourceforge.net and
+	cmatrix-devellists.sourceforge.net.  Anyone is welcome
+	to join and participate in the further development
+	of CMatrix, particularly people have contributed up until
+	now in it's development =-)

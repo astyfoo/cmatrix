@@ -1,6 +1,6 @@
 %define name    @PACKAGE@
 %define ver     @VERSION@
-%define rel     2
+%define rel     1
 
 Summary: CMatrix simulates the display from "The Matrix"
 Name: %{name}
@@ -8,16 +8,17 @@ Version: %{ver}
 Release: %{rel}
 Group: Amusements/Graphics
 Copyright: GPL
-Packager: abishekvashok@gmail.com
-URL: https://github.com/abishekvashok/cmatrix
-Source0: https://github.com/abishekvashok/cmatrix/archive/%{ver}.tar.gz
-Provides: none
+Packager: xylia.allegretta@gmail.com
+URL: http://www.asty.org/cmatrix/
+Source0: http://www.asty.org/cmatrix/dist/cmatrix-%{ver}.tar.gz
+#Provides: none
 Requires: ncurses
-Conflicts: none
+#Conflicts: none
 BuildRoot: /var/tmp/%{name}-buildroot
 %Description
-CMatrix is based on the screensaver from The Matrix website. It can scroll
-lines all at the same rate or asynchronously and at a user-defined speed.
+CMatrix is based on the screensaver from The Matrix website. It works
+with variable terminal sizes and can scroll lines all at the same
+rate or asynchronously and at a user-defined speed.
 %Prep
 %setup
 %Build
@@ -37,9 +38,9 @@ mkfontdir $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts/misc
 rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
-%doc COPYING INSTALL README.md
+%doc README COPYING ChangeLog AUTHORS INSTALL NEWS TODO
 %{_bindir}/cmatrix
 %{_mandir}/*/*
-/usr/lib/kbd/consolefonts/matrix.psf.gz
-/usr/lib/kbd/consolefonts/matrix.fnt
-/usr/X11R6/lib/X11/fonts/misc/mtx.pcf
+/usr/share/kbd/consolefonts/matrix.psf.gz
+/usr/share/kbd/consolefonts/matrix.fnt
+/usr/share/fonts/misc/mtx.pcf
