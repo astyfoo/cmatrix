@@ -85,14 +85,14 @@ cmatrix
 ```
 Run with different arguments to get different effects.
 ```sh
-cmatrix [-abBflohnsmVx] [-u update] [-C color]
+cmatrix -[aAbBcfhklLmnopsVxk] [-C color] [-M message] [-P count] [-t tty] [-u delay]
 ```
 Example:
 ```sh
 cmatrix -ba -u 2 -C red
 ```
 
-For more options and **help** run `cmatrix -h` <br>OR<br> Read Manual Page by running command `man cmatrix`
+For more options and **help** run `cmatrix -h` <br>OR<br> Read the Manual Page by running command `man cmatrix`
 
 _To get the program to look most like the movie, use `cmatrix -ba`_
 
@@ -107,6 +107,10 @@ option on older/slower systems to take a time penalty up front and save cycles a
 <p align="center">
 <img src="./data/img/cmatrix-utf8-version-1.gif" alt="cmatrix screencast">
 </p>
+
+### Maintainers
+- This repo: Xylia Allegretta <xylia.allegretta@gmail.com>
+- Version 2.0: Abishek V Ashok (@abishekvashok) <abishekvashok@gmail.com>
 
 ## Our Contributors
 #### Thanks to
@@ -127,16 +131,12 @@ option on older/slower systems to take a time penalty up front and save cycles a
   bugs, comments, patches or just a simple hello.
 - ➤ Everyone who has contributed to the project by opening issues and PRs on the github repository.
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
 ## Contribution Guide
 If you have any suggestions/flames/patches to send, please feel free to:
 - Open issues and if possible label them, so that it is easy to categorise features, bugs etc.
 - If you solved some problems or made some valuable changes, Please open a Pull Request on Github.
 - See [contributing.md](./CONTRIBUTING.md) for more details.
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
-## :page_facing_up: License
+## License
 This software is provided under the GNU GPL v3. [View License](./COPYING)
 
