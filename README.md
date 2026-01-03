@@ -105,7 +105,11 @@ option on older/slower systems to take a time penalty up front and save cycles a
 
 <!-- ![Movie-Like Cast](data/img/cmatrix-utf8-version-1.gif?raw=true "cmatrix -ba") -->
 <p align="center">
-<img src="./data/img/cmatrix-utf8-version-1.gif" alt="cmatrix screencast">
+<img width=50% src="./data/img/cmatrix_rainbow.gif" alt="cmatrix screencast rainbow">
+</p>
+
+<p align="center">
+<img width=50% src="./data/img/cmatrix_oldscroll.gif" alt="cmatrix screencast old scroll">
 </p>
 
 ### Maintainers
