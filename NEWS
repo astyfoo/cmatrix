@@ -5,7 +5,7 @@ cmatrix 3.1xlah - 01/02/2026 - Xylia Allegretta:
 	the additions. Unfortunately, I found that cmatrix.c (and the
 	whole repository, to be honest), was a *complete* mess. The most
 	annoying thing was definitely the space indentation instead of
-	tabs, making navigating with a text editor like nano entitely
+	tabs, making navigating with a text editor like nano entirely
 	miserable, but pretty much everything was entirely unworkable,
 	with nonsensical spacing and formatting, several random unused
 	variables, barely any comments, a different variable for each
