@@ -9,8 +9,8 @@ include(GNUInstallDirs)
 
 # These are relative to CMAKE_INSTALL_PREFIX
 # which by default is "/usr/local"
-set(CONSOLE_FONTS_DIRS "share/consolefonts" "lib/kbd/consolefonts")
-set(X_FONTS_DIRS "lib/X11/fonts/misc" "X11R6/lib/X11/fonts/misc" "share/fonts/X11/misc")
+set(CONSOLE_FONTS_DIRS "share/consolefonts" "share/kbd/consolefonts")
+set(X_FONTS_DIRS "share/fonts/misc")
 
 set(MKFONTDIR "/usr/bin/mkfontdir")
 
