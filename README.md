@@ -4,23 +4,11 @@
 
 </p>
 <p align="center">
-  <a href="https://travis-ci.org/abishekvashok/cmatrix">
-    <img src="https://travis-ci.org/abishekvashok/cmatrix.svg?branch=master">
-  </a>
-  <a href="./COPYING">
-    <img src="https://img.shields.io/github/license/abishekvashok/cmatrix?color=blue">
-  </a>
+  <a href="./COPYING"></a>
   <img src="https://img.shields.io/badge/contributions-welcome-orange">
-  <a href="https://github.com/abishekvashok/cmatrix/stargazers">
-    <img src="https://img.shields.io/github/stars/abishekvashok/cmatrix">
-  </a>
-  <a href="https://github.com/abishekvashok/cmatrix/network">
-    <img src="https://img.shields.io/github/forks/abishekvashok/cmatrix">
   </a>
 </p>
 
-
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
 ## Contents
 - [Overview](#overview)
@@ -36,36 +24,27 @@
 - [Contribution Guide](#contribution-guide)
 - [License](#license)
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## :cloud: Overview
+## Overview
 
 CMatrix is based on the screensaver from The Matrix website. It shows text
 flying in and out in a terminal like as seen in "The Matrix" movie. It can
 scroll lines all at the same rate or asynchronously and at a user-defined
 speed.
 
-This build of CMatrix is a (likely) short-lived branch created by the original
-author, streamlining many options and re-writing sections as a challenge to
-himself. It requires wide character ncurses support (ncursesw), and does away with all
-the font nonsense, in favor of a simple rending of the fonts using their Japanese
-alphabet and Arabic numeral UTF-8 versions, even if they are flipped from their
-'proper' direction.
-
-It also eliminates the 'old-style' scrolling from the original Windows screensaver,
-which was never authentic to the movie to begin with.
+This build of CMatrix is a fork of the 2.0 version maintained by Abishek V Ashok, adding some
+new features, optional support for libncursesw, updated support for the original fonts,
+and more.
 
 CMatrix is inspired from 'The Matrix' movie. If you haven’t seen this movie and you are a fan of computers or sci-fi in general, go see this movie!!!
 
-> :grey_exclamation:`Disclaimer` : We are in no way affiliated in any way with the movie "The Matrix", "Warner Bros" nor
+> `Disclaimer` : We are in no way affiliated in any way with the movie "The Matrix", "Warner Bros" nor
 any of its affiliates in any way, just fans.
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
-## :open_file_folder: Build Dependencies
+## Build Dependencies
 You'll probably need a decent ncurses library to get this to work. On Windows, using mingw-w64-ncurses is recommended (PDCurses will also work, but it does not support colors or bold text).
 <br>
-##### :small_blue_diamond: For Linux<br>
+##### For Linux<br>
 Run this command to check the version of ncurses.
 ```
 ldconfig -p | grep ncurses
@@ -73,12 +52,10 @@ ldconfig -p | grep ncurses
 If you get no output then you need to install ncurses. Click below to install ncurses in Linux.
 - [ncurses](https://www.cyberciti.biz/faq/linux-install-ncurses-library-headers-on-debian-ubuntu-centos-fedora/)
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
-## :floppy_disk: Building and installing cmatrix
+## Building and installing cmatrix
 To install cmatrix, Clone this repo in your local system and use either of the following methods from within the cmatrix directory.
 
-#### :small_blue_diamond: Using `configure` (recommended for most linux/mingw users)
+#### Using `configure` (recommended for most linux/mingw users)
 ```sh
 autoreconf -i  # skip if using released tarball
 ./configure
@@ -86,7 +63,7 @@ make
 make install
 ```
 
-#### :small_blue_diamond: Using CMake
+#### Using CMake
 Here we also show an out-of-source build in the sub directory "build".
 (Doesn't work on Windows, for now).
 ```sh
@@ -100,10 +77,7 @@ cmake ..
 make
 make install
 ```
-
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
-## :bookmark_tabs: Usage
+## Usage
 
 After you have installed **cmatrix** just type the command `cmatrix` to run it :)
 ```sh
@@ -122,36 +96,20 @@ For more options and **help** run `cmatrix -h` <br>OR<br> Read Manual Page by ru
 
 _To get the program to look most like the movie, use `cmatrix -ba`_
 
-> :round_pushpin: _Note: cmatrix is probably not particularly portable or efficient. Use the -p
+> _Note: cmatrix is probably not particularly portable or efficient. Use the -p
 option on older/slower systems to take a time penalty up front and save cycles as it runs.
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+## Captures
 
-## :camera: Captures
-
-#### :small_blue_diamond: Screenshots
+#### Screenshots
 
 <!-- ![Movie-Like Cast](data/img/cmatrix-utf8-version-1.gif?raw=true "cmatrix -ba") -->
 <p align="center">
 <img src="./data/img/cmatrix-utf8-version-1.gif" alt="cmatrix screencast">
 </p>
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
-
-## :zap: Maintainers
-- ➤ **Abishek V Ashok** [Core] - <abishekvashok@gmail.com><br> 
-<p align="center">
-  <a href="https://twitter.com/abishekvashok">
-    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white">
-  </a>
-  <a href="https://github.com/abishekvashok">
-    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white">
-  </a>
-</p>
-
-
-## :busts_in_silhouette: Our Contributors
-#### :small_orange_diamond: Thanks to
+## Our Contributors
+#### Thanks to
 - ➤ **Chris Allegretta** <chrisa@asty.org> for writing cmatrix up in a fortnight and giving us
   the responsibility to further improve it.
 - ➤ **Krisjon Hanson** and **Bjoern Ganslandt** for helping with bold support and
@@ -163,7 +121,6 @@ option on older/slower systems to take a time penalty up front and save cycles a
 - ➤ **John Donahue** for helping with transparent term support
 - ➤ **Ben Esacove** for Redhat 6 compatibility w/matrix.psf.gz
 - ➤ **jwz** for the xmatrix module to xscreensaver at http://www.jwz.org/xscreensaver.
-- ➤ **Xavier Allegretta** for being both a nuisance and the greatest inspiration a father could have.
 - ➤ **Sumit Kumar Soni** for beautifying the README.
 - The makers of the Matrix for one kickass movie!
 - ➤ Everyone who has sent (and who will send) us mails regarding
@@ -172,7 +129,7 @@ option on older/slower systems to take a time penalty up front and save cycles a
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## :book: Contribution Guide
+## Contribution Guide
 If you have any suggestions/flames/patches to send, please feel free to:
 - Open issues and if possible label them, so that it is easy to categorise features, bugs etc.
 - If you solved some problems or made some valuable changes, Please open a Pull Request on Github.
